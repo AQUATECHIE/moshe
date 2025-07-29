@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply | Moshe School of AI</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"/>
+  <style>
+    .error { color: red; font-size: 0.9rem; margin-bottom: 5px; }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .modal-content h2 { color: green; margin-bottom: 1rem; }
+    .modal-content button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: green;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="apply-section">
+    <h1>Apply for a Course</h1>
+    <form id="applicationForm" novalidate>
+      <div class="field">
+        <input type="text" name="name" placeholder="Full Name" required />
+        <div class="error" id="nameError"></div>
+      </div>
+
+      <div class="field">
+        <input type="email" name="email" placeholder="Email Address" required />
+        <div class="error" id="emailError"></div>
+      </div>
+
+      <div class="field">
+        <input type="text" name="phone" placeholder="Phone Number" required />
+        <div class="error" id="phoneError"></div>
+      </div>
+
+      <div class="field">
+        <select name="course" required>
+          <option value="">Select Course</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+          <option value="Data Analysis">Data Analysis</option>
+          <option value="Web Development">Web Development</option>
+          <option value="AI & Machine Learning">AI & Machine Learning</option>
+        </select>
+        <div class="error" id="courseError"></div>
+      </div>
+
+      <button type="submit">Submit Application</button>
+    </form>
+  </section>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <h2>✅ Application Submitted!</h2>
+      <p>Please check your email for confirmation and next steps.</p>
+      <button onclick="document.getElementById('successModal').style.display='none'">Close</button>
+    </div>
+  </div>
+
+  <!-- ✅ EmailJS SDK v4 via ES module -->
+  <script type="module">
+    import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/+esm';
+
+    emailjs.init('jP3r-DeD-YgFl-CdE'); // ✅ Your EmailJS public key
+
+    const form = document.getElementById('applicationForm');
+    const modal = document.getElementById('successModal');
+
+    const errors = {
+      name: document.getElementById('nameError'),
+      email: document.getElementById('emailError'),
+      phone: document.getElementById('phoneError'),
+      course: document.getElementById('courseError'),
+    };
+
+    const validate = () => {
+      let isValid = true;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const course = form.course.value;
+
+      errors.name.textContent = name ? '' : 'Full name is required';
+      errors.email.textContent = /^\S+@\S+\.\S+$/.test(email) ? '' : 'Valid email is required';
+      errors.phone.textContent = /^\d{10,15}$/.test(phone) ? '' : 'Valid phone number is required';
+      errors.course.textContent = course ? '' : 'Please select a course';
+
+      isValid = !(errors.name.textContent || errors.email.textContent || errors.phone.textContent || errors.course.textContent);
+      return isValid;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!validate()) return;
+
+      const formData = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        course: form.course.value
+      };
+
+      const adminPhone = '2348024962596';
+      const whatsappUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(
+        `New application from ${formData.name} for ${formData.course}. Contact at: ${formData.phone}`
+      )}`;
+      const formDataWithWhatsApp = { ...formData, whatsappLink: whatsappUrl };
+
+      try {
+        // Send to Applicant (includes WhatsApp link in email template)
+        await emailjs.send('service_juvoq4b', 'template_12dsgno', formDataWithWhatsApp);
+        console.log('✅ Confirmation email sent to applicant');
+
+        // Send to Admin
+        await emailjs.send('service_juvoq4b', 'template_ua6vesf', formDataWithWhatsApp);
+        console.log('✅ Notification email sent to admin');
+
+        form.reset();
+        modal.style.display = 'flex'; // Show modal
+      } catch (error) {
+        alert('There was an error submitting your application. Please try again later.');
+        console.error('❌ Email sending failed:', error);
+      }
+    });
+  </script>
+</body>
+</html>

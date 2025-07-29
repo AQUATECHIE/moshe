@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -163,6 +165,52 @@
             </div>
         </div>
     </section>
+    <section class="courses-section" id="courses">
+        <h2>Browse Courses</h2>
+        <div class="courses-container">
+            <!-- Course Card -->
+            <div class="course-card" onclick="openModal(0)">
+                <img src="slider-img2.jpg" alt="Cybersecurity">
+                <h3>Cybersecurity</h3>
+                <p>Learn how to secure networks, systems, and data from cyber threats.</p>
+                <button class="apply"> Apply </button>
+            </div>
+            <div class="course-card" onclick="openModal(1)">
+                <img src="slider-img2.jpg" alt="Data Analysis">
+                <h3>Data Analysis</h3>
+                <p>Master tools and techniques for analyzing and interpreting data.</p>
+                <button class="apply"> Apply </button>
+            </div>
+            <div class="course-card" onclick="openModal(2)">
+                <img src="slider-img2.jpg" alt="Web Development">
+                <h3>Web Development</h3>
+                <p>Build responsive, user-friendly websites and web applications.</p>
+                <button class="apply"> Apply </button>
+            </div>
+            <div class="course-card" onclick="openModal(3)">
+                <img src="slider-img2.jpg" alt="AI & Machine Learning">
+                <h3>AI & Machine Learning</h3>
+                <p>Get started with artificial intelligence and machine learning concepts.</p>
+                <button class="apply"> Apply </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="courseModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-img" src="" alt="">
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <p><strong>Duration:</strong> <span id="modal-duration"></span></p>
+            <p><strong>Price:</strong> <span id="modal-price"></span></p>
+            <a href="apply.html" class="enroll-button">Enroll Now</a>
+        </div>
+    </div>
+
+
+
 
 
 
