@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Apply | Moshe School of AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses | Moshe School of AI</title>
     <link rel="shortcut icon" href="./moshe.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 </head>
-
 <body>
+
     <div class="home" id="home">
         <div class="A">
             <div class="sidebar">
@@ -46,6 +44,11 @@
                     <span>a</span>
                     <span>i</span>
 
+                </div>
+                <div class="log">
+                    <a href="">
+                        <img src="./moshe.jpg" alt="" width="60px">
+                    </a>
                 </div>
 
             </div>
@@ -117,46 +120,47 @@
 
     </div>
 
-
-    <section class="apply-section">
-        <h1>Apply for a Course</h1>
-        <form id="applicationForm" novalidate>
-            <div class="field">
-                <input type="text" name="name" placeholder="Full Name" required />
-                <div class="error" id="nameError"></div>
+    <section class="courses-section" id="courses">
+        <h2>Browse Courses</h2>
+        <div class="courses-container">
+            <!-- Course Card -->
+            <div class="course-card" onclick="openModal(0)">
+                <img src="slider-img2.jpg" alt="Cybersecurity">
+                <h3>Cybersecurity</h3>
+                <p>Learn how to secure networks, systems, and data from cyber threats.</p>
+                <button class="apply"> Apply </button>
             </div>
-
-            <div class="field">
-                <input type="email" name="email" placeholder="Email Address" required />
-                <div class="error" id="emailError"></div>
+            <div class="course-card" onclick="openModal(1)">
+                <img src="slider-img2.jpg" alt="Data Analysis">
+                <h3>Data Analysis</h3>
+                <p>Master tools and techniques for analyzing and interpreting data.</p>
+                <button class="apply"> Apply </button>
             </div>
-
-            <div class="field">
-                <input type="text" name="phone" placeholder="Phone Number" required />
-                <div class="error" id="phoneError"></div>
+            <div class="course-card" onclick="openModal(2)">
+                <img src="slider-img2.jpg" alt="Web Development">
+                <h3>Web Development</h3>
+                <p>Build responsive, user-friendly websites and web applications.</p>
+                <button class="apply"> Apply </button>
             </div>
-
-            <div class="field">
-                <select name="course" required>
-                    <option value="">Select Course</option>
-                    <option value="Cybersecurity">Cybersecurity</option>
-                    <option value="Data Analysis">Data Analysis</option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="AI & Machine Learning">AI & Machine Learning</option>
-                </select>
-                <div class="error" id="courseError"></div>
+            <div class="course-card" onclick="openModal(3)">
+                <img src="slider-img2.jpg" alt="AI & Machine Learning">
+                <h3>AI & Machine Learning</h3>
+                <p>Get started with artificial intelligence and machine learning concepts.</p>
+                <button class="apply"> Apply </button>
             </div>
-
-            <button type="submit">Submit Application</button>
-        </form>
+        </div>
     </section>
 
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
+    <!-- Modal -->
+    <div class="modal" id="courseModal">
         <div class="modal-content">
-            <h2>✅ Application Submitted!</h2>
-            <p>Please check your email for confirmation and next steps.</p>
-            <button onclick="document.getElementById('successModal').style.display='none'">Close</button>
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-img" src="" alt="">
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <p><strong>Duration:</strong> <span id="modal-duration"></span></p>
+            <p><strong>Price:</strong> <span id="modal-price"></span></p>
+            <a href="apply.html" class="enroll-button">Enroll Now</a>
         </div>
     </div>
 
@@ -210,72 +214,7 @@
     </footer>
 
 
-    <!-- ✅ EmailJS SDK v4 via ES module -->
-    <script type="module">
-        import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/+esm';
-
-        emailjs.init('jP3r-DeD-YgFl-CdE'); // ✅ Your EmailJS public key
-
-        const form = document.getElementById('applicationForm');
-        const modal = document.getElementById('successModal');
-
-        const errors = {
-            name: document.getElementById('nameError'),
-            email: document.getElementById('emailError'),
-            phone: document.getElementById('phoneError'),
-            course: document.getElementById('courseError'),
-        };
-
-        const validate = () => {
-            const name = form.name.value.trim();
-            const email = form.email.value.trim();
-            const phone = form.phone.value.trim();
-            const course = form.course.value;
-
-            errors.name.textContent = name ? '' : 'Full name is required';
-            errors.email.textContent = /^\S+@\S+\.\S+$/.test(email) ? '' : 'Valid email is required';
-            errors.phone.textContent = /^\d{10,15}$/.test(phone) ? '' : 'Valid phone number is required';
-            errors.course.textContent = course ? '' : 'Please select a course';
-
-            return !(errors.name.textContent || errors.email.textContent || errors.phone.textContent || errors.course.textContent);
-        };
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (!validate()) return;
-
-            const formData = {
-                name: form.name.value.trim(),
-                email: form.email.value.trim(),
-                phone: form.phone.value.trim(),
-                course: form.course.value
-            };
-
-            const adminPhone = '2348024962596';
-            const whatsappUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(
-                `New application from ${formData.name} for ${formData.course}. Contact at: ${formData.phone}`
-            )}`;
-            const formDataWithWhatsApp = { ...formData, whatsappLink: whatsappUrl };
-
-            try {
-                // Send to Applicant (includes WhatsApp link in email template)
-                await emailjs.send('service_juvoq4b', 'template_12dsgno', formDataWithWhatsApp);
-                console.log('✅ Confirmation email sent to applicant');
-
-                // Send to Admin
-                await emailjs.send('service_juvoq4b', 'template_ua6vesf', formDataWithWhatsApp);
-                console.log('✅ Notification email sent to admin');
-
-                form.reset();
-                modal.style.display = 'flex';
-            } catch (error) {
-                alert('There was an error submitting your application. Please try again later.');
-                console.error('❌ Email sending failed:', error);
-            }
-        });
-    </script>
     <script src="script.js"></script>
+    
 </body>
-
 </html>

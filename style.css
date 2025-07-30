@@ -180,6 +180,9 @@ body {
     gap: 5px;
     color: white;
 }
+.log {
+    display: none;
+}
 
 .text {
     height: 90%;
@@ -571,6 +574,10 @@ ul li:hover {
 
     .logo {
         flex-direction: row;
+        display: none;
+    }
+    .log{
+        display: block;
     }
 
     .hero {
